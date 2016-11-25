@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   def require_user_presence!
     unless User.exists?(id: session[:user_id])
       redirect_to login_url
+      false
     end
   end
 end
