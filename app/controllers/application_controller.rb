@@ -4,7 +4,11 @@ class ApplicationController < ActionController::Base
   protected
 
   def current_user
-    User.find(session[:user_id])
+    if User.exists?(id: session[:user_id])
+      User.find(session[:user_id])
+    else
+      nil
+    end
   end
 
   def require_user_presence!

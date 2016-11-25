@@ -21,6 +21,8 @@ For css and javascript, go to `app/assets/javascripts` or `app/assets/stylesheet
 
 ### user authentication
 
+TO DISABLE: Comment out the line at the top of `app/controllers/basic_controller` that requires user presence.
+
 for sign up post a form to `register_path` with params `username`, `password`, `password_confirmation`.
 for login post a form to `authenticate_path` with params `username`, and `password`
 
