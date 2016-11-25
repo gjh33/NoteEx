@@ -3,8 +3,12 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def current_user
+    User.find(session[:user_id])
+  end
+
   def require_user_presence!
-    unless User.exists?(id: session[:user_id])
+    unless current_user
       redirect_to login_url
       false
     end

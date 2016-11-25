@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161125185753) do
+ActiveRecord::Schema.define(version: 20161125200436) do
 
   create_table "courses", force: :cascade do |t|
     t.string   "faculty"
@@ -60,8 +60,9 @@ ActiveRecord::Schema.define(version: 20161125185753) do
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "encrypted_password"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "points",             default: 0
   end
 
 end

@@ -39,5 +39,9 @@ You can then use
 This will check if there is a user already attempting to be made, and if there are any errors. If so then for each error message loop, and print li with the error message
 If you're really ambitious, you can prefill the form with what the user already tried to enter by accessing the attributes of `@user`.
 
+### file downloading
+
+use the `api_notes_download_path` and a GET request with the param `?id=12` where 12 is the actual id of the note. This will return a url `{ data: { url: 'blabla' } }` that you must redirect the browser to just like clicking a link. This will instead download the file.
+
 ## Testing
 Simple run `rails s` from the project directory and visit localhost:3000
