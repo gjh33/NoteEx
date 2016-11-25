@@ -64,13 +64,14 @@
 	<script>
 		$( "#searchbar" ).on("input", function() {
 			$( ".searchResult" ).remove();
-			var searchJSON = { query : $( "#searchbar" ).val() };
+			var searchJSON = { query : $( "#searchbar" ).val()};
 			
 			//var result = ['{ "id": "1" , "name": "Web Development", "faculty": "COMP", "number": "307" }'];
 			
-			jQuery.get("<%= api_courses_search_path %>", JSON.stringify(searchJSON), function (result) {
-				for (var i = 0; i < result.length; i++) {
-					var classObject = jQuery.parseJSON(result[i]);
+			jQuery.get("<%= api_courses_search_path %>", searchJSON, function (result) {
+				var data = result.data;
+				for (var i = 0; i < data.length; i++) {
+					var classObject = data[i];
 					var path = "<%= course_path %>" + "?id=" + classObject.id;
 					
 					var clone = $( "#searchResultTemplate" ).clone();
