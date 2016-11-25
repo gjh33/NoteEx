@@ -3,6 +3,20 @@
 	font-family: 'Dosis', sans-serif;
 }
 
+a:link {
+	color: #45b69c;
+	font-weight: bold;
+}
+
+a:visited {
+	color: #7293A0;
+}
+
+a:hover {
+	color: #21d19f !important; 
+	text-decoration: none !important;
+}
+
 .colored-block {
 	width: 100%;
 	padding: 5px 0px;
@@ -15,7 +29,7 @@
 .light_sea_green_background { background: #21d19f; }
 .white_background { background: white; }
 
-.azure_white { font-color: #d8ddef; }
+.azure_white { color: #d8ddef; }
 .cadet_grey { color: #a0a4b8; }
 .shadow_blue { color: #7293A0; }
 .keppel { color: #45b69c; }

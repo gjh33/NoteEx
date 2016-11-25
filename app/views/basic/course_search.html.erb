@@ -68,7 +68,7 @@
 			var result = ['{ "id": "1" , "name": "Web Development", "faculty": "COMP", "number": "307" }'];
 			for (var i = 0; i < result.length; i++) {
 					var clone = $( "#searchResultTemplate" ).clone();
-					clone.find( ".panel-body" ).html(stringifyClass(result[i]));
+					clone.find( ".panel-body" ).html('<a href="<%= course_path %>">' + stringifyClass(result[i]) + '</a>');
 					clone.find( ".hidden" ).removeClass("hidden").addClass("shown").addClass("searchResult");
 					clone.attr("id", "result" + i);
 					clone.appendTo( "#mainContainer" );
