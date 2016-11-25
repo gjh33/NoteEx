@@ -67,8 +67,11 @@
 			
 			var result = ['{ "id": "1" , "name": "Web Development", "faculty": "COMP", "number": "307" }'];
 			for (var i = 0; i < result.length; i++) {
+					var classObject = jQuery.parseJSON(result[i]);
+					var path = "<%= course_path %>" + "?id=" + classObject.id;
+					
 					var clone = $( "#searchResultTemplate" ).clone();
-					clone.find( ".panel-body" ).html('<a href="<%= course_path %>">' + stringifyClass(result[i]) + '</a>');
+					clone.find( ".panel-body" ).html('<a href="' + path + '">' + stringifyClass(classObject) + '</a>');
 					clone.find( ".hidden" ).removeClass("hidden").addClass("shown").addClass("searchResult");
 					clone.attr("id", "result" + i);
 					clone.appendTo( "#mainContainer" );
@@ -86,8 +89,7 @@
 		
 		function stringifyClass(classObject)
 		{
-			var object = jQuery.parseJSON(classObject);
-			var string = object.faculty + " " + object.number + ": " + object.name;
+			var string = classObject.faculty + " " + classObject.number + ": " + classObject.name;
 			return string;
 		}
 		
