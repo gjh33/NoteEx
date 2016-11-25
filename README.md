@@ -6,7 +6,8 @@
 2. Check if you have bundler by typing "bundle" in your command line. If no, run `gem install bundler`
 3. Clone this project to your computer
 4. cd into the project directory and run `bundle install`
-5. test it's working by running `rails s` on going to your browser and visiting localhost:3000
+5. Run `bundle exec rake db:setup`. Subsequent times you can run `bundle exec rake db:migrate` since you don't need to create or seed the database again.
+6. test it's working by running `rails s` on going to your browser and visiting localhost:3000
 
 ## Development
 
@@ -17,6 +18,26 @@ The routes can be seen by running `bundle exec rake routes` from the project dir
 your html documents can dynamically get info from the backend. To do so, use `<%= %>` to wrap the ruby call. To get the url of a page get the prefix from running `rake routes` and use `<a href="<%= prefix_path %>">my_link_to_prefix</a>`. For example for the profile page you use `profile_path` since the prefix for the profile page from `rake routes` is "profile".
 
 For css and javascript, go to `app/assets/javascripts` or `app/assets/stylesheets` and place your scripts there. They will automatically compile into the application. Write as many or as few files as you want.
+
+### user authentication
+
+for sign up post a form to `register_path` with params `username`, `password`, `password_confirmation`.
+for login post a form to `authenticate_path` with params `username`, and `password`
+
+If a user is not signed in, API calls will return `{ error: 'Authentication Error', msg: 'User not signed in' }`. For page requests it will redirect to login.
+On signup if you fail to register, `@user` will be made available to you in your view. You should check `if @user && @user.errors.any?` before using @user or you may error.
+You can then use
+```html
+<% if @user && @user.errors.any? %>
+  <ul class="error-list">
+    <% @user.errors.full_messages.each do |error_message| %>
+      <li><%= error_message %></li>
+    <% end %>
+  </ul>
+<% end %>
+```
+This will check if there is a user already attempting to be made, and if there are any errors. If so then for each error message loop, and print li with the error message
+If you're really ambitious, you can prefill the form with what the user already tried to enter by accessing the attributes of `@user`.
 
 ## Testing
 Simple run `rails s` from the project directory and visit localhost:3000
