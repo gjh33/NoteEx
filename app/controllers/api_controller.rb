@@ -1,4 +1,6 @@
 class ApiController < ApplicationController
+  before_filter :require_user_presence!
+
   protected
 
   def render_error(error, message, par={})

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
     post 'notes/upload'
+    post 'courses/search'
   end
 
   root to: 'basic#course_search'
