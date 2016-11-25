@@ -1,6 +1,7 @@
 class Api::NotesController < ApiController
   def upload
-    note = Note.new(attachment: params[:attachment])
+    teaching = Teaching.find(params[:teaching_id])
+    note = Note.new(attachment: params[:attachment], teaching: teaching)
     if note.save
       current_user.points += 5
       render_success

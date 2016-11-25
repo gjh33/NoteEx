@@ -15,7 +15,7 @@ hh = Teacher.create(name: 'Hamed Hatami', school: mcgill)
 ms = Teacher.create(name: 'Marcin Sabok', school: mcgill)
 
 # Terms
-f2016 = Term.create(year: '2016', season: 'Fall')
+f2016 = Term.create(year: '2016', season: 'Fall', school: mcgill)
 
 # Teachings
 Teaching.create(course: c307, teacher: jv, term: f2016)
