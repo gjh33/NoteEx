@@ -3,6 +3,9 @@ Rails.application.routes.draw do
     post 'notes/upload'
     get 'notes/download'
     get 'courses/search'
+    get 'courses/teachings'
+    get 'courses/show'
+    get 'teachings/notes'
   end
 
   root to: 'basic#course_search'
