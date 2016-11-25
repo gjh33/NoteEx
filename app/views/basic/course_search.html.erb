@@ -2,81 +2,60 @@
 <html lang="en">
 <head>
 	<style type="text/css">
-	#custom-search-input {
-        margin:0;
-        margin-top: 10px;
-        padding: 0;
-    }
- 
-    #custom-search-input .search-query {
-        padding-right: 3px;
-        padding-right: 4px;
-        padding-left: 3px;
-        padding-left: 4px;
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
- 
-    #custom-search-input button {
-        border: 0;
-        background: none;
-        padding: 2px 5px;
-        margin-top: 2px;
-        position: relative;
-        left: -28px;
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        color:#D9230F;
-    }
- 
-    .search-query:focus + button {
-        z-index: 3;   
-    }
 	</style>
   <title>NoteEx</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Dosis|Lato" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-	<nav class="navbar navbar-static-top navbar-dark bg-inverse">
-      <a class="navbar-brand" href="#">NoteEx</a>
-      <ul class="nav navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="<%= login_path %>">Log In </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="<%= sign_up_path %>">Sign Up</a>
-        </li>
-      </ul>
-    </nav>
+	<div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+			<a class="navbar-brand" href="#">
+				<i class="glyphicon glyphicon-list-alt"></i>
+			</a>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
+				<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="collapse navbar-collapse navbar-menubuilder">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="<%= login_path %>">Log In</a>
+					</li>
+					<li><a href="<%= sign_up_path %>">Sign Up</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<section class="colored-block light_sea_green_background">
+			<div class="container"/>
+		</section>	
+	</div>
 	<div class="container">
-		<div class="row">
-			<div class="col-xs-4">
-				<h1 class="display-3">NoteEx</h1>
-			</div>
-		</div>	
-		<div class="row">
-			<div id="custom-search-input">
-				<div class="input-group col-md-12">
-					<input type="text" class="  search-query form-control" placeholder="Search for a class" />
-					<span class="input-group-btn">
-						<button class="btn btn-danger" type="button">
-							<span class=" glyphicon glyphicon-search"></span>
-						</button>
-					</span>
+			<div class="row">
+				<div class="col-xs-4">
+					<span class="keppel header">Note</span>
+					<span class="light_sea_green header">Ex</span>
+
 				</div>
-			</div>
+			</div>	
+		<div class="row">
+			<form>
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search">
+					<div class="input-group-btn">
+					  <button class="btn" type="submit">
+						<i class="glyphicon glyphicon-search"></i>
+					  </button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
