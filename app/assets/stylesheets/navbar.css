@@ -37,3 +37,7 @@
     background-color: #7293a0;
 }
 
+#custom-bootstrap-menu.navbar-default .glyphicon {
+	font-size: 22px
+}
+
