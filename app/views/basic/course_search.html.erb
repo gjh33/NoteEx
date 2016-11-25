@@ -64,9 +64,12 @@
 	<script>
 		$( "#searchbar" ).on("input", function() {
 			$( ".searchResult" ).remove();
+			var searchJSON = { query : $( "#searchbar" ).val() };
 			
-			var result = ['{ "id": "1" , "name": "Web Development", "faculty": "COMP", "number": "307" }'];
-			for (var i = 0; i < result.length; i++) {
+			//var result = ['{ "id": "1" , "name": "Web Development", "faculty": "COMP", "number": "307" }'];
+			
+			jQuery.get("<%= api_courses_search_path %>", JSON.stringify(searchJSON), function (result) {
+				for (var i = 0; i < result.length; i++) {
 					var classObject = jQuery.parseJSON(result[i]);
 					var path = "<%= course_path %>" + "?id=" + classObject.id;
 					
@@ -75,16 +78,8 @@
 					clone.find( ".hidden" ).removeClass("hidden").addClass("shown").addClass("searchResult");
 					clone.attr("id", "result" + i);
 					clone.appendTo( "#mainContainer" );
-			}
-			//$.ajax({success: function(result) {
-				//for (var i = 0; i < result.length; i++) {
-					//var clone = $( "#searchResultTemplate" ).clone();
-					//clone.find( ".panel-body" ).html(result[i].toString());
-					//clone.find( ".hidden" ).removeClass("hidden").addClass("shown");
-					//clone.attr("id", "result" + i);
-					//clone.appendTo( "#mainContainer" );
-				//}
-			//})
+				}
+			});
 		});
 		
 		function stringifyClass(classObject)
