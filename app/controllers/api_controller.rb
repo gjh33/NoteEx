@@ -5,14 +5,14 @@ class ApiController < ApplicationController
 
   def render_error(error, message, par={})
     par[:status] ||= 400
-    render json: { error: error, msg: message, status: par[:status] }
+    render json: { error: error, msg: message, status: par[:status] }, status: par[:status]
   end
 
   def render_success(par={})
     par[:status] ||= 200
     data = par[:data] ? { data: par[:data] } : {}
     resp = { status: par[:status] }.merge(data)
-    render json: resp
+    render json: resp, status: par[:status]
   end
 
   def require_user_presence!
