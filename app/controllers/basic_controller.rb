@@ -1,5 +1,5 @@
 class BasicController < ApplicationController
-  before_filter :require_user_presence!, only: [:course_search, :course_view, :user_profile]
+  #before_filter :require_user_presence!, only: [:course_search, :course_view, :user_profile]
 
   def login
   end

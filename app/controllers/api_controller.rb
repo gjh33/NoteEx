@@ -1,5 +1,5 @@
 class ApiController < ApplicationController
-  before_filter :require_user_presence!
+  #before_filter :require_user_presence!
 
   protected
 

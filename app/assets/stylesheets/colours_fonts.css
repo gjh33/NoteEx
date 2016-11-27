@@ -17,11 +17,12 @@ a:hover {
 	text-decoration: none !important;
 }
 
-.colored-block {
+.solid_line {
 	width: 100%;
-	padding: 5px 0px;
+	padding: 2px 0px;
 	color: #fff;
 }
+
 .azure_white_background { background: #d8ddef; }
 .cadet_grey_background { background: #a0a4b8; }
 .shadow_blue_background { background: #7293A0; }
@@ -37,6 +38,18 @@ a:hover {
 
 .header {
 	font-size: 100px;
+}
+
+.header_2 {
+	font-size: 40px;
+}
+
+.header_3 {
+	font-size: 35px;
+}
+
+.small_brand {
+	font-size: 30px;
 }
 
 .hidden{
