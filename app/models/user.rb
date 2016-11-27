@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  attr_accessor :password
+
   validates :username, presence: true, uniqueness: true, length: { :in => 3..20 }
   validates :password, :confirmation => true
   validates :password_confirmation, presence: true, on: :create
