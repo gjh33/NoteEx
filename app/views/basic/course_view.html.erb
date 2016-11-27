@@ -84,24 +84,26 @@
 						var data = result.data;
 						for (var i = 0; i < data.length; i++) {
 							var teaching = data[i];
-							//var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
+							var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
 							
-							//var clone = $( "#termItemTemplate" ).clone();
-							//clone.html('<a href="' + path + '">' + stringifyTerm(teaching.term) + ": " + teaching.teacher.name + '</a>');
-							//clone.removeClass("hidden").addClass("shown");
-							//clone.attr("id", "teaching" + i);
-							//clone.appendTo( "#termItemList" );
+							var clone = $( "#termItemTemplate" ).clone();
+							clone.html('<a href="' + path + '">' + stringifyTerm(teaching.term) + ": " + teaching.teacher.name + '</a>');
+							clone.removeClass("hidden").addClass("shown");
+							clone.attr("id", "teaching" + i);
+							clone.appendTo( "#termItemList" );
 						}
 					});
 					
 				$.get("<%= api_teachings_notes_path %>", teachingId, function (result) {
 						var data = result.data;
 						for (var i = 0; i < data.length; i++) {
-							var teaching = data[i];
-							var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
+							var note = data[i];
+							//var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
+							var pathParts = note.attachment.url.split("/");
+							var name = pathParts[pathParts.length - 1];
 							
 							var clone = $( "#noteItemTemplate" ).clone();
-							clone.html('<a href="' + path + '">' + stringifyTerm(teaching.term) + ": " + teaching.teacher.name + '</a>');
+							clone.html(name);
 							clone.removeClass("hidden").addClass("shown");
 							clone.attr("id", "note" + i);
 							clone.appendTo( "#noteItemList" );
