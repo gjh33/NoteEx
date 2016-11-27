@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  DEV_MODE = false
+  DEV_MODE = true
 
   protected
 

@@ -3,7 +3,7 @@
 	font-family: 'Dosis', sans-serif;
 }
 
-a:link {
+a, a:link {
 	color: #45b69c;
 	font-weight: bold;
 }
@@ -17,11 +17,12 @@ a:hover {
 	text-decoration: none !important;
 }
 
-.colored-block {
+.solid_line {
 	width: 100%;
-	padding: 5px 0px;
+	padding: 2px 0px;
 	color: #fff;
 }
+
 .azure_white_background { background: #d8ddef; }
 .cadet_grey_background { background: #a0a4b8; }
 .shadow_blue_background { background: #7293A0; }
@@ -39,10 +40,54 @@ a:hover {
 	font-size: 100px;
 }
 
+.header_2 {
+	font-size: 40px;
+}
+
+.header_3 {
+	font-size: 35px;
+}
+
+.small_brand {
+	font-size: 30px;
+}
+
+.error {
+	color: #7f0000;
+}
+
+.note-link {
+	font-size: 22px;
+}
+
+.term-link {
+	font-size: 18px;
+	border: none !important;
+}
+
 .hidden{
     visibility: hidden;
 }
 .shown{
     visibility: visible;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    cursor: inherit;
+    display: block;
 }
  

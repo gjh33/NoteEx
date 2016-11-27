@@ -1,2 +1,198 @@
-<h1>Basic#course_view</h1>
-<p>Find me in app/views/basic/course_view.html.erb</p>
+<html lang="en">
+	<head>
+	  <title>NoteEx</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link href="https://fonts.googleapis.com/css?family=Dosis|Lato" rel="stylesheet">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	</head>
+	<body>
+		<div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+				<a class="navbar-brand" href="<%= root_path %>">
+					<span class="azure_white small_brand">NoteEx</span>
+				</a>
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
+					<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button>
+				</div>
+				
+				<div class="collapse navbar-collapse navbar-menubuilder">
+					<ul class="nav navbar-nav navbar-right" id="navbar-buttons-list">
+						<li>
+							<%= form_tag("/upload", method: "post", id: "upload_form") do %>
+								<label class="btn btn-default btn-file keppel_background btn-navbar hidden" id="uploadLabel">
+									Upload <input name="attachment" type="file" style="display: none;" id="upload">
+								</label>
+							<% end %>
+						</li>
+						<li><a href="<%= profile_path %>">Profile</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<section class="navbar_coloured_strip  light_sea_green_background">
+				<div class="container"/>
+			</section>	
+		</div>
+		<div class="container-fluid" id="mainContainer">
+			<div class="row">
+				<div class="col-xs-10 shadow_blue header_2 course_name">
+				</div>
+				<div class="col-xs-2 keppel header_3 course_school" style="text-align: right">
+				</div>
+
+			</div>
+			<div class="row" style="padding-top:50px">
+				<div class="col-xs-3">
+					<span class="cadet_grey header_3">Terms</span>
+					<ul class="list-group" id="termItemList">
+						<li class="list-group-item hidden term-link" id="termItemTemplate"></li>
+					</ul>
+				</div>
+				<div class="col-xs-9">
+					<span class="cadet_grey header_3">Notes</span>
+					<ul class="list-group" id="noteItemList">
+						<li class="list-group-item hidden" id="noteItemTemplate"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script>
+			var ready;
+			ready = function () {
+				var classId = { id : getUrlParameter("class_id")};
+				var teachingId = { id : getUrlParameter("teaching_id") };
+				var userId = { id : <%= @current_user.id %>}
+				
+				$.get("<%= api_courses_show_path %>", classId, function (result) {
+						var data = result.data;
+						$( ".course_name" ).html(stringifyClassName(data));
+						$( ".course_school" ).html(data.school.name);
+					});
+				
+				$.get("<%= api_users_show_path %>", userId, function (result) {
+					var data = result.data;
+					
+					$( '<li> <a> Points: ' + data.points + '</a></li>' ).appendTo( "#navbar-buttons-list" )
+				});
+				
+				$.get("<%= api_courses_teachings_path %>", classId, function (result) {
+						var data = result.data;
+						for (var i = 0; i < data.length; i++) {
+							var teaching = data[i];
+							teachingId.id = teaching.id;
+							var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
+							
+							var clone = $( "#termItemTemplate" ).clone();
+							clone.html('<a href="' + path + '">' + stringifyTerm(teaching.term) + ": " + teaching.teacher.name + '</a>');
+							clone.removeClass("hidden").addClass("shown");
+							clone.attr("id", "teaching" + i);
+							clone.appendTo( "#termItemList" );
+						}
+					});
+					
+				if (teachingId.id != null) {
+					$( "#uploadLabel" ).removeClass("hidden").addClass("shown");
+					$.get("<%= api_teachings_notes_path %>", teachingId, function (result) {
+							var data = result.data;
+							for (var i = 0; i < data.length; i++) {
+								var note = data[i];
+								var pathParts = note.attachment.url.split("/");
+								var name = pathParts[pathParts.length - 1];
+								
+								var clone = $( "#noteItemTemplate" ).clone();
+								clone.html('<a role="button" class="keppel note-link">' + name + '</a>');
+								clone.find("a").attr("id", note.id).click( function() {
+									var noteId = { id : this.id };
+									$.get("<%= api_notes_download_path %>", noteId, function (result){
+										window.open(result.data.url, '_blank');
+										window.location.replace(window.location);
+									}).fail(function (result) {
+										var error = JSON.parse(result.responseText);
+										var errorMessageItem = $('<div class="row"> <div class="col-xs-4 error">' + error.error + "!" + '</div></div>');
+										errorMessageItem.appendTo( "#noteItem" + noteId.id);
+									});
+								});
+								clone.removeClass("hidden").addClass("shown");
+								clone.attr("id", "noteItem" + note.id);
+								clone.appendTo( "#noteItemList" );
+							}
+					});
+				}
+				$(':file').on('fileselect', function(event, numFiles, label) {
+					var attachment = $( "#upload" )[0].files[0];
+					var form = document.querySelector("#upload_form");
+					
+					var fileObject = new FormData(document.querySelector("#upload_form"));
+					fileObject.append("attachment", attachment);
+					fileObject.append("teaching_id", teachingId.id);
+					
+					$.ajax({
+						url : "<%= api_notes_upload_path %>", 
+						type: "POST",
+						data: fileObject, 
+						cache: false,
+						contentType: false,
+						processData: false,
+						success: function(data) {
+							var label = $( "#uploadLabel" );
+							var input = label.find("input");
+
+							label.html("Success!");
+							label.append(input);
+							
+							window.location.replace(window.location);
+						},
+						error : function(error) {
+							var label = $( "#uploadLabel" );
+							var input = label.find("input");
+
+							label.html("Error");							
+							label.append(input);
+						}
+					});
+				});
+			
+				$(document).on('change', ':file', function() {
+					var input = $(this),
+					numFiles = input.get(0).files ? input.get(0).files.length : 1,
+					label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+					input.trigger('fileselect', [numFiles, label]);
+				});
+			}
+		
+		
+			function stringifyClassName(classObject)
+			{
+				return classObject.faculty + " " + classObject.number + ": " + classObject.name;
+			}
+			
+			function stringifyTerm(termObject)
+			{
+				return termObject.season + " " + termObject.year;
+			}
+			
+			function getUrlParameter(sParam) {
+				var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+					sURLVariables = sPageURL.split('&'),
+					sParameterName,
+					i;
+
+				for (i = 0; i < sURLVariables.length; i++) {
+					sParameterName = sURLVariables[i].split('=');
+
+					if (sParameterName[0] === sParam) {
+						return sParameterName[1] === undefined ? true : sParameterName[1];
+					}
+				}
+			}					
+					
+			$(document).ready(ready);
+		</script>
+	</body>
+</html>
