@@ -66,6 +66,7 @@
 			$( function () {
 				var classId = { id : getUrlParameter("class_id")};
 				var teachingId = { id : getUrlParameter("teaching_id") };
+				var userId = { id : <%= @current_user.id %>}
 
 				
 				$.get("<%= api_courses_show_path %>", classId, function (result) {
@@ -73,6 +74,12 @@
 						$( ".course_name" ).html(stringifyClassName(data));
 						$( ".course_school" ).html(data.school.name);
 					});
+				
+				$.get("<%= api_users_show_path %>", userId, function (result) {
+					var data = result.data;
+					
+					$( '<li> <a> Points: ' + data.points + '</a></li>' ).appendTo( "#navbar-buttons-list" )
+				});
 				
 				$.get("<%= api_courses_teachings_path %>", classId, function (result) {
 						var data = result.data;
