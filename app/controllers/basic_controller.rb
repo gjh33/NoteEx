@@ -17,7 +17,7 @@ class BasicController < ApplicationController
   end
 
   def authenticate_user
-    user = User.where(username: params[:username])
+    user = User.find_by_username(username: params[:username])
     if user.authenticate(params[:password])
       session[:user_id] = user.id
       redirect_to course_search_url
