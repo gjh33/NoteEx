@@ -1,2 +1,18 @@
 <h1>Basic#login</h1>
+<%= form_tag(authenticate_path, method: "post") do %>
+	<input type="text" name="username">
+	<input type="password" name="password">
+	<%= submit_tag("Submit") %>
+
+	<% if @user && @user.errors.any? %>
+	  <ul class="error-list">
+	    <% @user.errors.full_messages.each do |error_message| %>
+	      <li><%= error_message %></li>
+	    <% end %>
+	  </ul>
+	<% end %>
+
+<% end %>
+
+<a href="<%= sign_up_path %>">Sign Up</a>
 <p>Find me in app/views/basic/login.html.erb</p>

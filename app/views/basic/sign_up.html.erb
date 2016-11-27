@@ -1,2 +1,21 @@
 <h1>Basic#sign_up</h1>
+
+<form action="<%= register_path %>" method="POST">
+	<%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+	<input type="text" name="username"> </br>
+	<input type="password" name="password"> </br>
+	<input type="password" name="password_confirmation"> </br>
+	<button type="submit">Submit</button>
+
+	<% if @user && @user.errors.any? %>
+	  <ul class="error-list">
+	    <% @user.errors.full_messages.each do |error_message| %>
+	      <li><%= error_message %></li>
+	    <% end %>
+	  </ul>
+	<% end %>
+
+</form>
+
+<a href="<%= login_path %>">Login</a>
 <p>Find me in app/views/basic/sign_up.html.erb</p>
