@@ -21,6 +21,6 @@ class User < ApplicationRecord
 
   def authenticate(pass)
     encrypted = Digest::SHA1.hexdigest(pass)
-    encrypted == self.encrypt_password
+    encrypted == self.encrypted_password
   end
 end
