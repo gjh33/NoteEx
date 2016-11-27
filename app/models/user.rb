@@ -16,4 +16,9 @@ class User < ApplicationRecord
   def clear_password
     self.password = nil
   end
+
+  def authenticate(pass)
+    encrypted = Digest::SHA1.hexdigest(pass)
+    encrypted == self.encrypt_password
+  end
 end
