@@ -66,5 +66,7 @@ https://quickleft.com/blog/how-to-upload-to-carrierwave-with-javascript/
 
 `GET /api/teachings/notes` expecting an "id" field for the teaching id that you wish to get a list of notes to
 
+`GET /api/users/show` expecting an "id" for the user id that you wish to get the info for
+
 ## Testing
 Simple run `rails s` from the project directory and visit localhost:3000

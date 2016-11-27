@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get 'courses/teachings'
     get 'courses/show'
     get 'teachings/notes'
+    get 'users/show'
   end
 
   root to: 'basic#course_search'
