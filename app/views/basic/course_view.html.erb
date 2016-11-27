@@ -22,7 +22,7 @@
 					<ul class="nav navbar-nav navbar-right" id="navbar-buttons-list">
 						<li>
 							<%= form_tag("/upload", method: "post", id: "upload_form") do %>
-								<label class="btn btn-default btn-file keppel_background btn-navbar" id="uploadLabel">
+								<label class="btn btn-default btn-file keppel_background btn-navbar hidden" id="uploadLabel">
 									Upload <input name="attachment" type="file" style="display: none;" id="upload">
 								</label>
 							<% end %>
@@ -67,7 +67,6 @@
 				var classId = { id : getUrlParameter("class_id")};
 				var teachingId = { id : getUrlParameter("teaching_id") };
 				var userId = { id : <%= @current_user.id %>}
-
 				
 				$.get("<%= api_courses_show_path %>", classId, function (result) {
 						var data = result.data;
@@ -97,6 +96,7 @@
 					});
 					
 				if (teachingId.id != null) {
+					$( "#uploadLabel" ).removeClass("hidden").addClass("shown");
 					$.get("<%= api_teachings_notes_path %>", teachingId, function (result) {
 							var data = result.data;
 							for (var i = 0; i < data.length; i++) {
