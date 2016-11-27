@@ -1,0 +1,48 @@
+	
+* {
+	font-family: 'Dosis', sans-serif;
+}
+
+a:link {
+	color: #45b69c;
+	font-weight: bold;
+}
+
+a:visited {
+	color: #7293A0;
+}
+
+a:hover {
+	color: #21d19f !important; 
+	text-decoration: none !important;
+}
+
+.colored-block {
+	width: 100%;
+	padding: 5px 0px;
+	color: #fff;
+}
+.azure_white_background { background: #d8ddef; }
+.cadet_grey_background { background: #a0a4b8; }
+.shadow_blue_background { background: #7293A0; }
+.keppel_background { background: #45b69c; }
+.light_sea_green_background { background: #21d19f; }
+.white_background { background: white; }
+
+.azure_white { color: #d8ddef; }
+.cadet_grey { color: #a0a4b8; }
+.shadow_blue { color: #7293A0; }
+.keppel { color: #45b69c; }
+.light_sea_green{ color: #21d19f; }
+
+.header {
+	font-size: 100px;
+}
+
+.hidden{
+    visibility: hidden;
+}
+.shown{
+    visibility: visible;
+}
+ 
