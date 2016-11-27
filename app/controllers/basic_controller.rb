@@ -20,7 +20,7 @@ class BasicController < ApplicationController
     user = User.find_by_username(params[:username])
     if user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to course_search_url
+      redirect_to root_url
     else
       redirect_to login_url
     end
@@ -31,7 +31,7 @@ class BasicController < ApplicationController
                     password_confirmation: params[:password_confirmation])
     if user.save
       session[:user_id] = user.id
-      redirect_to course_search_url
+      redirect_to root_url
     else
       @user = user
       render :sign_up
