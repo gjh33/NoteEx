@@ -3,7 +3,7 @@
 	font-family: 'Dosis', sans-serif;
 }
 
-a:link {
+a, a:link {
 	color: #45b69c;
 	font-weight: bold;
 }
@@ -50,6 +50,19 @@ a:hover {
 
 .small_brand {
 	font-size: 30px;
+}
+
+.error {
+	color: #7f0000;
+}
+
+.note-link {
+	font-size: 22px;
+}
+
+.term-link {
+	font-size: 18px;
+	border: none !important;
 }
 
 .hidden{

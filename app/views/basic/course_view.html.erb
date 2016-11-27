@@ -19,7 +19,7 @@
 				</div>
 				
 				<div class="collapse navbar-collapse navbar-menubuilder">
-					<ul class="nav navbar-nav navbar-right">
+					<ul class="nav navbar-nav navbar-right" id="navbar-buttons-list">
 						<li>
 							<%= form_tag("/upload", method: "post", id: "upload_form") do %>
 								<label class="btn btn-default btn-file keppel_background btn-navbar" id="uploadLabel">
@@ -27,9 +27,7 @@
 								</label>
 							<% end %>
 						</li>
-						<li><a href="<%= login_path %>">Log In</a>
-						</li>
-						<li><a href="<%= sign_up_path %>">Sign Up</a>
+						<li><a href="<%= profile_path %>">Profile</a>
 						</li>
 					</ul>
 				</div>
@@ -50,7 +48,7 @@
 				<div class="col-xs-3">
 					<span class="cadet_grey header_3">Terms</span>
 					<ul class="list-group" id="termItemList">
-						<li class="list-group-item hidden" id="termItemTemplate"></li>
+						<li class="list-group-item hidden term-link" id="termItemTemplate"></li>
 					</ul>
 				</div>
 				<div class="col-xs-9">
@@ -68,22 +66,19 @@
 			$( function () {
 				var classId = { id : getUrlParameter("class_id")};
 				var teachingId = { id : getUrlParameter("teaching_id") };
-				
-				if (teachingId.id == null)
-				{
-					teachingId.id = 1;
-				}
+
 				
 				$.get("<%= api_courses_show_path %>", classId, function (result) {
 						var data = result.data;
 						$( ".course_name" ).html(stringifyClassName(data));
 						$( ".course_school" ).html(data.school.name);
 					});
-					
+				
 				$.get("<%= api_courses_teachings_path %>", classId, function (result) {
 						var data = result.data;
 						for (var i = 0; i < data.length; i++) {
 							var teaching = data[i];
+							teachingId.id = teaching.id;
 							var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
 							
 							var clone = $( "#termItemTemplate" ).clone();
@@ -94,21 +89,33 @@
 						}
 					});
 					
-				$.get("<%= api_teachings_notes_path %>", teachingId, function (result) {
-						var data = result.data;
-						for (var i = 0; i < data.length; i++) {
-							var note = data[i];
-							//var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
-							var pathParts = note.attachment.url.split("/");
-							var name = pathParts[pathParts.length - 1];
-							
-							var clone = $( "#noteItemTemplate" ).clone();
-							clone.html(name);
-							clone.removeClass("hidden").addClass("shown");
-							clone.attr("id", "note" + i);
-							clone.appendTo( "#noteItemList" );
-						}
-				});
+				if (teachingId.id != null) {
+					$.get("<%= api_teachings_notes_path %>", teachingId, function (result) {
+							var data = result.data;
+							for (var i = 0; i < data.length; i++) {
+								var note = data[i];
+								var pathParts = note.attachment.url.split("/");
+								var name = pathParts[pathParts.length - 1];
+								
+								var clone = $( "#noteItemTemplate" ).clone();
+								clone.html('<a role="button" class="keppel note-link">' + name + '</a>');
+								clone.find("a").attr("id", note.id).click( function() {
+									var noteId = { id : this.id };
+									$.get("<%= api_notes_download_path %>", noteId, function (result){
+										var data = result.data;
+									}).fail(function (result) {
+										var error = JSON.parse(result.responseText);
+										var errorMessageItem = $('<div class="row"> <div class="col-xs-4 error">' + error.error + "!" + '</div></div>');
+										errorMessageItem.appendTo( "#noteItem" + noteId.id);
+									});
+								});
+								clone.removeClass("hidden").addClass("shown");
+								clone.attr("id", "noteItem" + note.id);
+								clone.appendTo( "#noteItemList" );
+							}
+					});
+				}
+				
 				
 				$(':file').on('fileselect', function(event, numFiles, label) {
 					var attachment = $( "#upload" )[0].files[0];
