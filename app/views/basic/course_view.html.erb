@@ -20,6 +20,13 @@
 				
 				<div class="collapse navbar-collapse navbar-menubuilder">
 					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<%= form_tag("/upload", method: "post", id: "upload_form") do %>
+								<label class="btn btn-default btn-file keppel_background btn-navbar" id="uploadLabel">
+									Upload <input name="attachment" type="file" style="display: none;" id="upload">
+								</label>
+							<% end %>
+						</li>
 						<li><a href="<%= login_path %>">Log In</a>
 						</li>
 						<li><a href="<%= sign_up_path %>">Sign Up</a>
@@ -40,10 +47,16 @@
 
 			</div>
 			<div class="row" style="padding-top:50px">
-				<div class="col-xs-4">
+				<div class="col-xs-3">
 					<span class="cadet_grey header_3">Terms</span>
 					<ul class="list-group" id="termItemList">
 						<li class="list-group-item hidden" id="termItemTemplate"></li>
+					</ul>
+				</div>
+				<div class="col-xs-9">
+					<span class="cadet_grey header_3">Notes</span>
+					<ul class="list-group" id="noteItemList">
+						<li class="list-group-item hidden" id="noteItemTemplate"></li>
 					</ul>
 				</div>
 			</div>
@@ -53,28 +66,86 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script>
 			$( function () {
-				var id = { id : getUrlParameter("id")};
-				var teachingId = { id : 1 };
+				var classId = { id : getUrlParameter("class_id")};
+				var teachingId = { id : getUrlParameter("teaching_id") };
 				
-				jQuery.get("<%= api_courses_show_path %>", id, function (result) {
+				if (teachingId.id == null)
+				{
+					teachingId.id = 1;
+				}
+				
+				$.get("<%= api_courses_show_path %>", classId, function (result) {
 						var data = result.data;
 						$( ".course_name" ).html(stringifyClassName(data));
 						$( ".course_school" ).html(data.school.name);
 					});
 					
-				jQuery.get("<%= api_courses_teachings_path %>", id, function (result) {
+				$.get("<%= api_courses_teachings_path %>", classId, function (result) {
 						var data = result.data;
 						for (var i = 0; i < data.length; i++) {
 							var teaching = data[i];
+							//var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
 							
-							var clone = $( "#termItemTemplate" ).clone();
-							clone.html('<button>' + stringifyTerm(teaching.term) + ": " + teaching.teacher.name + '</button>');
-							clone.removeClass("hidden").addClass("shown");
-							clone.attr("id", "teaching" + i);
-							clone.appendTo( "#termItemList" );
+							//var clone = $( "#termItemTemplate" ).clone();
+							//clone.html('<a href="' + path + '">' + stringifyTerm(teaching.term) + ": " + teaching.teacher.name + '</a>');
+							//clone.removeClass("hidden").addClass("shown");
+							//clone.attr("id", "teaching" + i);
+							//clone.appendTo( "#termItemList" );
 						}
 					});
+					
+				$.get("<%= api_teachings_notes_path %>", teachingId, function (result) {
+						var data = result.data;
+						for (var i = 0; i < data.length; i++) {
+							var teaching = data[i];
+							var path = "<%= course_path %>" + "?class_id=" + classId.id + "&teaching_id=" + teachingId.id;
+							
+							var clone = $( "#noteItemTemplate" ).clone();
+							clone.html('<a href="' + path + '">' + stringifyTerm(teaching.term) + ": " + teaching.teacher.name + '</a>');
+							clone.removeClass("hidden").addClass("shown");
+							clone.attr("id", "note" + i);
+							clone.appendTo( "#noteItemList" );
+						}
+				});
+				
+				$(':file').on('fileselect', function(event, numFiles, label) {
+					var attachment = $( "#upload" )[0].files[0];
+					var form = document.querySelector("#upload_form");
+					
+					var fileObject = new FormData(document.querySelector("#upload_form"));
+					fileObject.append("attachment", attachment);
+					fileObject.append("teaching_id", teachingId.id);
+					
+					$.ajax({
+						url : "<%= api_notes_upload_path %>", 
+						type: "POST",
+						data: fileObject, 
+						cache: false,
+						contentType: false,
+						processData: false,
+						success: function(data) {
+							var label = $( "#uploadLabel" );
+							var input = label.find("input");
+
+							label.html("Success!");
+							label.append(input);
+						},
+						error : function(error) {
+							var label = $( "#uploadLabel" );
+							var input = label.find("input");
+
+							label.html("Error");							
+							label.append(input);
+						}
+					});
+				});
+			});
 			
+			$(document).on('change', ':file', function() {
+				var input = $(this),
+				numFiles = input.get(0).files ? input.get(0).files.length : 1,
+				label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+				input.trigger('fileselect', [numFiles, label]);
 			});
 			
 			function stringifyClassName(classObject)

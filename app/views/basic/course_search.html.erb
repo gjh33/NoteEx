@@ -70,7 +70,7 @@
 						var data = result.data;
 						for (var i = 0; i < data.length; i++) {
 							var classObject = data[i];
-							var path = "<%= course_path %>" + "?id=" + classObject.id;
+							var path = "<%= course_path %>" + "?class_id=" + classObject.id;
 							
 							var clone = $( "#searchResultTemplate" ).clone();
 							clone.find( ".panel-body" ).html('<a href="' + path + '">' + stringifyClass(classObject) + '</a>');
