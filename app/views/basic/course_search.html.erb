@@ -18,10 +18,8 @@
 					</button>
 				</div>
 				<div class="collapse navbar-collapse navbar-menubuilder">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="<%= login_path %>">Log In</a>
-						</li>
-						<li><a href="<%= sign_up_path %>">Sign Up</a>
+					<ul class="nav navbar-nav navbar-right" id="navbar-buttons-list">
+						<li><a href="<%= profile_path %>">Profile</a>
 						</li>
 					</ul>
 				</div>
@@ -59,34 +57,46 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script>
-			$( "#searchbar" ).on("input", function() {
-				$( ".searchResult" ).remove();
-				var query = $( "#searchbar" ).val();
-				
-				if (query != "") {
-					var searchJSON = { query : query };
-					
-					jQuery.get("<%= api_courses_search_path %>", searchJSON, function (result) {
+			var ready;
+			ready = function () {
+				var userId = { id : <%= @current_user.id %>}
+				$.get("<%= api_users_show_path %>", userId, function (result) {
 						var data = result.data;
-						for (var i = 0; i < data.length; i++) {
-							var classObject = data[i];
-							var path = "<%= course_path %>" + "?class_id=" + classObject.id;
-							
-							var clone = $( "#searchResultTemplate" ).clone();
-							clone.find( ".panel-body" ).html('<a href="' + path + '">' + stringifyClass(classObject) + '</a>');
-							clone.find( ".hidden" ).removeClass("hidden").addClass("shown").addClass("searchResult");
-							clone.attr("id", "result" + i);
-							clone.appendTo( "#mainContainer" );
-						}
+						
+						$( '<li> <a> Points: ' + data.points + '</a></li>' ).appendTo( "#navbar-buttons-list" )
 					});
-				}
-			});
+					
+				$( "#searchbar" ).on("input", function() {
+					$( ".searchResult" ).remove();
+					var query = $( "#searchbar" ).val();
+					
+					if (query != "") {
+						var searchJSON = { query : query };
+						
+						jQuery.get("<%= api_courses_search_path %>", searchJSON, function (result) {
+							var data = result.data;
+							for (var i = 0; i < data.length; i++) {
+								var classObject = data[i];
+								var path = "<%= course_path %>" + "?class_id=" + classObject.id;
+								
+								var clone = $( "#searchResultTemplate" ).clone();
+								clone.find( ".panel-body" ).html('<a href="' + path + '">' + stringifyClass(classObject) + '</a>');
+								clone.find( ".hidden" ).removeClass("hidden").addClass("shown").addClass("searchResult");
+								clone.attr("id", "result" + i);
+								clone.appendTo( "#mainContainer" );
+							}
+						});
+					}
+				});
+			}
 			
 			function stringifyClass(classObject)
 			{
 				var string = classObject.faculty + " " + classObject.number + ": " + classObject.name;
 				return string;
-			}		
+			}
+
+			$(document).ready(ready);	
 		</script>
 	</body>
 </html>

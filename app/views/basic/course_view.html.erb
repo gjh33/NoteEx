@@ -63,7 +63,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script>
-			$( function () {
+			var ready;
+			ready = function () {
 				var classId = { id : getUrlParameter("class_id")};
 				var teachingId = { id : getUrlParameter("teaching_id") };
 				var userId = { id : <%= @current_user.id %>}
@@ -109,7 +110,8 @@
 								clone.find("a").attr("id", note.id).click( function() {
 									var noteId = { id : this.id };
 									$.get("<%= api_notes_download_path %>", noteId, function (result){
-										var data = result.data;
+										window.open(result.data.url, '_blank');
+										window.location.replace(window.location);
 									}).fail(function (result) {
 										var error = JSON.parse(result.responseText);
 										var errorMessageItem = $('<div class="row"> <div class="col-xs-4 error">' + error.error + "!" + '</div></div>');
@@ -122,8 +124,6 @@
 							}
 					});
 				}
-				
-				
 				$(':file').on('fileselect', function(event, numFiles, label) {
 					var attachment = $( "#upload" )[0].files[0];
 					var form = document.querySelector("#upload_form");
@@ -157,15 +157,16 @@
 						}
 					});
 				});
-			});
 			
-			$(document).on('change', ':file', function() {
-				var input = $(this),
-				numFiles = input.get(0).files ? input.get(0).files.length : 1,
-				label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-				input.trigger('fileselect', [numFiles, label]);
-			});
-			
+				$(document).on('change', ':file', function() {
+					var input = $(this),
+					numFiles = input.get(0).files ? input.get(0).files.length : 1,
+					label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+					input.trigger('fileselect', [numFiles, label]);
+				});
+			}
+		
+		
 			function stringifyClassName(classObject)
 			{
 				return classObject.faculty + " " + classObject.number + ": " + classObject.name;
@@ -189,7 +190,9 @@
 						return sParameterName[1] === undefined ? true : sParameterName[1];
 					}
 				}
-			}			
+			}					
+					
+			$(document).ready(ready);
 		</script>
 	</body>
 </html>
