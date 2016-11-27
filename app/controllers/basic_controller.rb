@@ -1,5 +1,6 @@
 class BasicController < ApplicationController
   before_filter :require_user_presence!, only: [:course_search, :course_view, :user_profile]
+  before_action :load_user, only: [:course_search, :course_view, :user_profile]
 
   def login
   end
@@ -36,5 +37,11 @@ class BasicController < ApplicationController
       @user = user
       render :sign_up
     end
+  end
+
+  private
+
+  def load_user
+    @current_user = current_user
   end
 end
