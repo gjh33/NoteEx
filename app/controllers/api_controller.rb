@@ -16,6 +16,7 @@ class ApiController < ApplicationController
   end
 
   def require_user_presence!
+    return true if DEV_MODE
     unless User.exists?(id: session[:user_id])
       render_error("Authentication Error", "User is not signed in")
       false

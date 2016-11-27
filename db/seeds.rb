@@ -22,3 +22,6 @@ Teaching.create(course: c307, teacher: jv, term: f2016)
 Teaching.create(course: c551, teacher: jp, term: f2016)
 Teaching.create(course: c330, teacher: hh, term: f2016)
 Teaching.create(course: m318, teacher: ms, term: f2016)
+
+# Default user
+User.create(username: 'admin', password: 'root123', password_confirmation: 'root123')
