@@ -40,8 +40,11 @@
 
 			</div>
 			<div class="row" style="padding-top:50px">
-				<div class="col-xs-4 cadet_grey header_3">
-					Terms
+				<div class="col-xs-4">
+					<span class="cadet_grey header_3">Terms</span>
+					<ul class="list-group" id="termItemList">
+						<li class="list-group-item hidden" id="termItemTemplate"></li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -51,6 +54,7 @@
 		<script>
 			$( function () {
 				var id = { id : getUrlParameter("id")};
+				var teachingId = { id : 1 };
 				
 				jQuery.get("<%= api_courses_show_path %>", id, function (result) {
 						var data = result.data;
@@ -60,17 +64,29 @@
 					
 				jQuery.get("<%= api_courses_teachings_path %>", id, function (result) {
 						var data = result.data;
-						
+						for (var i = 0; i < data.length; i++) {
+							var teaching = data[i];
+							
+							var clone = $( "#termItemTemplate" ).clone();
+							clone.html('<button>' + stringifyTerm(teaching.term) + ": " + teaching.teacher.name + '</button>');
+							clone.removeClass("hidden").addClass("shown");
+							clone.attr("id", "teaching" + i);
+							clone.appendTo( "#termItemList" );
+						}
 					});
 			
 			});
 			
 			function stringifyClassName(classObject)
 			{
-				var string = classObject.faculty + " " + classObject.number + ": " + classObject.name;
-				return string;
+				return classObject.faculty + " " + classObject.number + ": " + classObject.name;
 			}
-
+			
+			function stringifyTerm(termObject)
+			{
+				return termObject.season + " " + termObject.year;
+			}
+			
 			function getUrlParameter(sParam) {
 				var sPageURL = decodeURIComponent(window.location.search.substring(1)),
 					sURLVariables = sPageURL.split('&'),
