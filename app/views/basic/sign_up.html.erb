@@ -1,21 +1,73 @@
-<h1>Basic#sign_up</h1>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>NoteEx</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Dosis|Lato" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+	<div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">
+					<i class="glyphicon glyphicon-list-alt"></i>
+				</a>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
+					<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="collapse navbar-collapse navbar-menubuilder">
+				<ul class="nav navbar-nav navbar-right" id="navbar-buttons-list">
+					<li><a href="<%= login_path %>">Login</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<section class="navbar_coloured_strip light_sea_green_background">
+			<div class="container"/>
+		</section>	
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-4">
+				<span class="keppel header">Note</span>
+				<span class="light_sea_green header">Ex</span>
+			</div>
+		</div>
+		<div class="form-signin center-block">
+			<h2 class="form-signin-heading">Sign Up</h2>
+			<div class="row">
+				<div class="col-sm-6">
+					<form action="<%= register_path %>" method="POST">
+						<%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
 
-<form action="<%= register_path %>" method="POST">
-	<%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
-	<input type="text" name="username"> </br>
-	<input type="password" name="password"> </br>
-	<input type="password" name="password_confirmation"> </br>
-	<button type="submit">Submit</button>
+						Username: <input type="text" name="username" class="form-control" required autofocus> </br>
+						Password: <input type="password" name="password" class="form-control" required> </br>
+						Confirmation: <input type="password" name="password_confirmation" class="form-control" required> </br>
+						<button type="submit" class="btn btn-lg btn-success btn-block">Sign Up</button>
 
-	<% if @user && @user.errors.any? %>
-	  <ul class="error-list">
-	    <% @user.errors.full_messages.each do |error_message| %>
-	      <li><%= error_message %></li>
-	    <% end %>
-	  </ul>
-	<% end %>
-
-</form>
-
-<a href="<%= login_path %>">Login</a>
-<p>Find me in app/views/basic/sign_up.html.erb</p>
+						<!-- Display error message -->
+						<% if @user && @user.errors.any? %>
+						<ul class="error-list">
+							<% @user.errors.full_messages.each do |error_message| %>
+							<li><%= error_message %></li>
+							<% end %>
+						</ul>
+						<% end %>
+					</form>
+				</div>
+				<div class="col-sm-1">
+				</div>
+				<div class="col-sm-3 text-center">
+					<br/><br/><br/> or
+					<a href="<%= login_path %>" class="btn btn-lg btn-default btn-block">
+						<span class="glyphicon glyphicon-user"></span> Login 
+					</a>
+				</div>	
+			</div>
+		</div>	
+	</div>
+</body>
+</html>
